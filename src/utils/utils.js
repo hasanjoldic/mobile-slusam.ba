@@ -43,3 +43,24 @@ export const isBase64Bigger = (base64String, sizeInMB) => {
 
 export const host = "http://localhost";
 export const port = 8080;
+
+export const formatTime = (timeInMS) => {
+  let hours;
+  let minutes;
+  let seconds;
+  let timeInSeconds = timeInMS / 1000;
+  hours = Math.floor(timeInSeconds / 3600);
+  timeInSeconds -= hours * 3600;
+  minutes = Math.floor(timeInSeconds / 60);
+  timeInSeconds -= minutes * 60;
+  seconds = Math.floor(timeInSeconds);
+  
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+  if (seconds < 10) {
+    seconds = "0" + seconds;
+  }
+
+  return hours > 0 ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
+}
