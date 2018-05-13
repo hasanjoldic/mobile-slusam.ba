@@ -64,3 +64,6 @@ export const formatTime = (timeInMS) => {
 
   return hours > 0 ? `${hours}:${minutes}:${seconds}` : `${minutes}:${seconds}`;
 }
+
+export const appColor = "#E41F1F";
+export const cmsColor = "#0080FF";

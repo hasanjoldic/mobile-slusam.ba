@@ -1,6 +1,9 @@
 package com.slusaj;
 
 import com.facebook.react.ReactActivity;
+import android.content.Intent;
+import android.net.Uri;
+import android.widget.Toast;
 
 public class MainActivity extends ReactActivity {
 

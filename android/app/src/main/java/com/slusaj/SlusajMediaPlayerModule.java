@@ -23,11 +23,14 @@ import android.widget.Toast;
 import android.media.AudioManager;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
+import android.content.Intent;
+
 public class SlusajMediaPlayerModule extends ReactContextBaseJavaModule {
 
   private MediaPlayer mediaPlayer;
   private Context context;
   private ReactContext reactContext;
+  public static int REQ_CODE_PICK_SOUNDFILE = 1;
 
   private AudioManager.OnAudioFocusChangeListener mAudioFocusListener;
 
@@ -109,6 +112,23 @@ public class SlusajMediaPlayerModule extends ReactContextBaseJavaModule {
       public void onCompletion(MediaPlayer player) {
         SlusajMediaPlayerModule.this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
           .emit("SlusajMediaPlayer_COMPLETION", null);
+      }
+    });
+    this.mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+      @Override
+      public boolean onInfo(MediaPlayer player, int what, int extra) {
+        if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
+          SlusajMediaPlayerModule.this.reactContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit("MEDIA_INFO_BUFFERING_START", null);
+            return true;
+        } else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+          SlusajMediaPlayerModule.this.reactContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit("MEDIA_INFO_BUFFERING_END", null);
+            return true;
+        }
+        return false;
       }
     });
   }

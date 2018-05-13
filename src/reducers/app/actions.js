@@ -1,10 +1,11 @@
-import { Alert } from "react-native";
-
 import {
   LOAD_START,
   LOAD_FINISH,
-  SET_PROGRESS,
-  SET_IMAGE_URL
+  TRANSMIT_START,
+  TRANSMIT_FINISH,
+  SET_TRANSMIT_PROGRESS,
+  SET_ERROR_MESSAGE,
+  CHANGE_IS_CMS
 } from "./index.js";
 
 export const loadStart = () => {
@@ -19,20 +20,34 @@ export const loadFinish = () => {
   };
 };
 
-export const setProgress = (progress) => {
+export const transmitStart = () => {
   return {
-  	type: SET_PROGRESS,
-  	payload: {
-  	  progress
-  	}
+    type: TRANSMIT_START
   };
 };
 
-export const setImageUrl = (imageUrl) => {
+export const transmitFinish = () => {
   return {
-  	type: SET_IMAGE_URL,
-  	payload: {
-  	  imageUrl
-  	}
+    type: TRANSMIT_FINISH
+  };
+};
+
+export const setTransmitProgress = (transmitProgress) => {
+  return {
+    type: SET_TRANSMIT_PROGRESS,
+    payload: {transmitProgress}
+  };
+};
+
+export const setErrorMessage = (errorMessage) => {
+  return {
+    type: SET_ERROR_MESSAGE,
+    payload: {errorMessage}
+  };
+};
+
+export const changeIsCms = () => {
+  return {
+    type: CHANGE_IS_CMS
   };
 };

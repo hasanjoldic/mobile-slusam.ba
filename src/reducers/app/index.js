@@ -1,13 +1,17 @@
 export const LOAD_START = "app/LOAD_START";
 export const LOAD_FINISH = "app/LOAD_FINISH";
-export const SET_PROGRESS = "app/SET_PROGRESS";
-export const SET_IMAGE_URL = "app/SET_IMAGE_URL";
+export const CHANGE_IS_CMS = "app/CHANGE_IS_CMS";
+export const SET_ERROR_MESSAGE  ="app/SET_ERROR_MESSAGE";
+export const TRANSMIT_START  ="app/TRANSMIT_START";
+export const TRANSMIT_FINISH  ="app/TRANSMIT_FINISH";
+export const SET_TRANSMIT_PROGRESS  ="app/SET_TRANSMIT_PROGRESS";
 
 const INITIAL_STATE = {
-    isLoading: false,
-    progress: 0,
-    fontSize: 16,
-    imageUrl: ""
+  isLoading: false,
+  isTransmitting: false, // use for both upload and download
+  transmitProgress: 0,
+  errorMessage: "",
+  isCms: true
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,16 +26,33 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isLoading: false
       };
-    case SET_PROGRESS:
+    case CHANGE_IS_CMS:
       return {
         ...state,
-        progress: action.payload.progress
+        isCms: !state.isCms
       };
-      SET_IMAGE_URL
-    case SET_IMAGE_URL:
+    case SET_ERROR_MESSAGE:
       return {
         ...state,
-        imageUrl: action.payload.imageUrl
+        isLoading: false,
+        errorMessage: action.payload.errorMessage
+      };
+    case TRANSMIT_START:
+      return {
+        ...state,
+        isLoading: true,
+        isTransmitting: true
+      };
+    case TRANSMIT_FINISH:
+      return {
+        ...state,
+        isLoading: false,
+        isTransmitting: false
+      };
+    case SET_TRANSMIT_PROGRESS:
+      return {
+        ...state,
+        transmitProgress: action.payload.transmitProgress
       };
     default:
       return state;

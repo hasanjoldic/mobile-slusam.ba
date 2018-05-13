@@ -1,80 +1,87 @@
 import React, { Component } from "react";
 import {
-	View,
-	Text,
-	TouchableOpacity
+	View,Text,TouchableOpacity,Animated
 } from "react-native";
+import { connect } from "react-redux";
 
-export const tabValues = {
-  PLAYING: "playing",
-  SEARCH_RESULTS: "searchResults",
-  SEARCH_RESULT_ARTIST: "searchResultArtist",
-  PLAYLISTS: "playlists"
-}
+import { appColor } from "../utils/utils";
+import { tabValues } from "../reducers/tab/index";
+import { setActiveTab } from "../reducers/tab/actions";
 
 class TabGroup extends Component {
+
   render() {
-  	const { activeTab, setActiveTab, selectedArtistSongList } = this.props;
+  	const { activeTab, setActiveTab, selectedArtistSongs } = this.props;
   	return (
   		<View elevation={5} 
   			style={{
   				minHeight:40,height:"7%",flexDirection:"row",justifyContent:"space-around",
-  				marginTop:0,backgroundColor:"#0080FF"
+  				marginTop:0,backgroundColor:appColor
   			}}
   		>
         <View 
           style={{
-        	  backgroundColor: activeTab === tabValues.PLAYING ? "#0080FF" : "#FFF",
+        	  backgroundColor: activeTab === tabValues.PLAYING ? appColor : "#FFF",
         	  flex:1,marginLeft:5
           }}
          >
           <TouchableOpacity 
             style={{
               flex:1,alignItems:"center",padding:10,paddingBottom:5,borderColor:"#FFF",
-              backgroundColor: activeTab === tabValues.PLAYING ? "#FFF" : "#0080FF",
+              backgroundColor: activeTab === tabValues.PLAYING ? "#FFF" : appColor,
               borderTopLeftRadius: activeTab === tabValues.PLAYING ? 5 : 0,
               borderTopRightRadius: activeTab === tabValues.PLAYING ? 5 : 0,
-              borderBottomRightRadius: activeTab === tabValues.SEARCH_RESULTS ? 5 : 0,
+              borderBottomRightRadius: activeTab === tabValues.SEARCH_RESULTS || 
+                activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0,
             }}
             onPress={() => setActiveTab(tabValues.PLAYING)}
             activeOpacity={1}
           >
             <Text style={{color: activeTab === tabValues.PLAYING ? "#000" : "#FFF"}}>Slusam</Text>
+            {this.props.isAddingSong &&
+              <Animated.Text style={{fontSize:this.props.addSongFontSize,color:"#FFF",
+                position:"absolute",right:20,top:10}}>
+              +1</Animated.Text>}
           </TouchableOpacity>
         </View>
 
         <View 
         	style={{
-        		backgroundColor: activeTab === tabValues.SEARCH_RESULTS ? "#0080FF" : "#FFF",
-        		flex:1
+        		backgroundColor: activeTab === tabValues.SEARCH_RESULTS || 
+            activeTab === tabValues.SEARCH_RESULT_ARTIST ? appColor : "#FFF",
+        		flex:1,marginRight:5
         	}}
         >
           <TouchableOpacity 
             style={{
               flex:1,alignItems:"center",padding:10,paddingBottom:5,borderColor:"#FFF",
-              backgroundColor: activeTab === tabValues.SEARCH_RESULTS ? "#FFF" : "#0080FF",
+              backgroundColor: activeTab === tabValues.SEARCH_RESULTS || 
+                activeTab === tabValues.SEARCH_RESULT_ARTIST ? "#FFF" : appColor,
               borderBottomLeftRadius: activeTab === tabValues.PLAYING ? 5 : 0,
-              borderTopLeftRadius: activeTab === tabValues.SEARCH_RESULTS ? 5 : 0,
-              borderTopRightRadius: activeTab === tabValues.SEARCH_RESULTS ? 5 : 0,
-              borderBottomRightRadius: selectedArtistSongList ? activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0 : activeTab === tabValues.PLAYLISTS ? 5 : 0,
+              borderTopLeftRadius: activeTab === tabValues.SEARCH_RESULTS || 
+                activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0,
+              borderTopRightRadius: activeTab === tabValues.SEARCH_RESULTS || 
+                activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0,
+              borderBottomRightRadius: selectedArtistSongs ? activeTab === tabValues.PLAYLISTS ? 5 : 0 : activeTab === tabValues.PLAYLISTS ? 5 : 0,
             }}
             onPress={() => setActiveTab(tabValues.SEARCH_RESULTS)}
             activeOpacity={1}
           >
-            <Text style={{color: activeTab === tabValues.SEARCH_RESULTS ? "#000" : "#FFF"}}>Pretraga</Text>
+            <Text style={{color: activeTab === tabValues.SEARCH_RESULTS || 
+              activeTab === tabValues.SEARCH_RESULT_ARTIST ? "#000" : "#FFF"}}>Pretraga</Text>
           </TouchableOpacity>
         </View>
-        {selectedArtistSongList.length > 0 && 
+        {/*{selectedArtistSongs.length > 0 && 
 	        <View 
 	        	style={{
-	        		backgroundColor: activeTab === tabValues.SEARCH_RESULT_ARTIST ? "#0080FF" : "#FFF",
+	        		backgroundColor: activeTab === tabValues.SEARCH_RESULT_ARTIST ? appColor : "#FFF",
 	        		flex:1
 	        	}}
 	        >
 	          <TouchableOpacity 
 	            style={{
 	              flex:1,alignItems:"center",padding:10,paddingBottom:5,borderColor:"#FFF",
-	              backgroundColor: activeTab === tabValues.SEARCH_RESULT_ARTIST ? "#FFF" : "#0080FF",
+	              backgroundColor: activeTab === tabValues.SEARCH_RESULT_ARTIST ? "#FFF" : appColor,
 	              borderBottomLeftRadius: activeTab === tabValues.SEARCH_RESULTS ? 5 : 0,
 	              borderTopLeftRadius: activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0,
 	              borderTopRightRadius: activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0,
@@ -84,34 +91,42 @@ class TabGroup extends Component {
 	            activeOpacity={1}
 	          >
 	            <Text style={{color: activeTab === tabValues.SEARCH_RESULT_ARTIST ? "#000" : "#FFF"}}>
-	            	{selectedArtistSongList[0].name}
+	            	{selectedArtistSongs[0].name}
 	            </Text>
 	          </TouchableOpacity>
 	        </View>
-	      }
-        <View 
+	      }*/}
+        {/*<View 
         	style={{
-        		backgroundColor: activeTab === tabValues.PLAYLISTS ? "#0080FF" : "#FFF",flex:1,
+        		backgroundColor: activeTab === tabValues.PLAYLISTS ? appColor : "#FFF",flex:1,
         		marginRight:5
         	}}
         >
           <TouchableOpacity 
             style={{
               flex:1,alignItems:"center",padding:10,paddingBottom:5,borderColor:"#FFF",
-              backgroundColor: activeTab === tabValues.PLAYLISTS ? "#FFF" : "#0080FF",
+              backgroundColor: activeTab === tabValues.PLAYLISTS ? "#FFF" : appColor,
               borderTopLeftRadius: activeTab === tabValues.PLAYLISTS ? 5 : 0,
               borderTopRightRadius: activeTab === tabValues.PLAYLISTS ? 5 : 0,
-              borderBottomLeftRadius: selectedArtistSongList ? activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0 : activeTab === tabValues.SEARCH_RESULTS ? 5 : 0,
+              borderBottomLeftRadius: selectedArtistSongs ? activeTab === tabValues.SEARCH_RESULT_ARTIST ? 5 : 0 : activeTab === tabValues.SEARCH_RESULTS ? 5 : 0,
             }}
             onPress={() => setActiveTab(tabValues.PLAYLISTS)}
             activeOpacity={1}
           >
             <Text style={{color: activeTab === tabValues.PLAYLISTS ? "#000" : "#FFF"}}>Playliste</Text>
           </TouchableOpacity>
-        </View>
+        </View>*/}
       </View>
   	);
   }
 }
 
-export default TabGroup;
+const mapStateToProps = (state) => {
+	const { tab } = state;
+	return {
+		activeTab: tab.activeTab,
+		selectedArtistSongs: state.search.selectedArtistSongs
+	};
+};
+
+export default connect(mapStateToProps, {setActiveTab})(TabGroup);
